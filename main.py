@@ -86,10 +86,13 @@ class App(tk.Tk):
     def place_bullets(self):
         for i, e in enumerate(self.bullets_float):
             bullet_button = tk.Button(self.bullets_frame)
+            display_index = (
+                i + 1 if self.bullets_state[i] == 0 else " " + str(i + 1) + "*"
+            )
             display_prob = (
                 e if self.bullets_state[i] == 0 else self.bullets_state[i] % 2
             )
-            bullet_button.config(text="{}\n{: .2f}".format(i + 1, display_prob))
+            bullet_button.config(text="{}\n{: .2f}".format(display_index, display_prob))
             bullet_button.config(fg="white" if display_prob > 0.5 else "white")
             bullet_button.config(font=("Arial", 12, "bold"))
             bullet_button.config(command=lambda i=i: self.flip_bullet(i))
