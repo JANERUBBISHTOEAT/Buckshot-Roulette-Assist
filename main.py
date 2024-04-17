@@ -1,6 +1,6 @@
 import tkinter as tk
 
-import matplotlib.cm as cm
+# import matplotlib.cm as cm
 import matplotlib.colors as colors
 from matplotlib.colors import LinearSegmentedColormap
 
@@ -41,14 +41,18 @@ class App(tk.Tk):
     def place_slider_red(self, frame: tk.Frame):
         self.slider_label_red = tk.Label(frame, text="Red")
         self.slider_label_red.grid(row=0, column=0)
+        self.slider_label_red.config(fg="white", bg="red")
         self.slider_red = tk.Scale(frame, from_=0, to=8, orient="horizontal")
+        self.slider_red.config(fg="red")
         self.slider_red.set(4)
         self.slider_red.grid(row=1, column=0)
 
     def place_slider_black(self, frame: tk.Frame):
         self.slider_label_black = tk.Label(frame, text="Black")
         self.slider_label_black.grid(row=0, column=1)
+        self.slider_label_black.config(fg="white", bg="black")
         self.slider_black = tk.Scale(frame, from_=0, to=8, orient="horizontal")
+        self.slider_black.config(fg="black")
         self.slider_black.set(4)
         self.slider_black.grid(row=1, column=1)
 
