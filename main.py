@@ -61,7 +61,7 @@ class App(tk.Tk):
         self.slider_label_red.grid(row=0, column=0)
         self.slider_label_red.config(fg="white", bg="red")
         self.slider_red = tk.Scale(frame, from_=0, to=8, orient="horizontal")
-        self.slider_red.config(fg="red")
+        self.slider_red.config(fg="red", command=lambda _: self.clear_bullets())
         self.slider_red.set(4)
         self.slider_red.grid(row=1, column=0)
 
@@ -70,7 +70,7 @@ class App(tk.Tk):
         self.slider_label_black.grid(row=0, column=1)
         self.slider_label_black.config(fg="white", bg="black")
         self.slider_black = tk.Scale(frame, from_=0, to=8, orient="horizontal")
-        self.slider_black.config(fg="black")
+        self.slider_black.config(fg="black", command=lambda _: self.clear_bullets())
         self.slider_black.set(4)
         self.slider_black.grid(row=1, column=1)
 

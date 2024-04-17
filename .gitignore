@@ -1,2 +1,5 @@
 
 .vscode/launch.json
+dist
+build
+main.spec
