@@ -10,6 +10,7 @@ class App(tk.Tk):
         super().__init__()
         self.title("My App")
         self.geometry("450x220")
+        self.attributes("-topmost", False)
 
         # Variables
         self.bullets_float = []  # Float probability of *red* bullets
@@ -27,8 +28,25 @@ class App(tk.Tk):
         slider_frame.pack(padx=10, pady=10)
 
         # Clear Button
-        self.clear_button = tk.Button(self, text="Clear", command=self.clear_bullets)
-        self.clear_button.pack(padx=10, pady=10)
+        control_buttons_frame = tk.Frame(self)
+        self.clear_button = tk.Button(
+            control_buttons_frame, text="Clear", command=self.clear_bullets
+        )
+        self.clear_button.grid(row=0, column=0, padx=10, pady=10)
+
+        # Topmost Button
+        self.topmost_button = tk.Button(
+            control_buttons_frame,
+            text="Pin",
+            command=lambda: (
+                self.attributes("-topmost", not self.attributes("-topmost")),
+                self.topmost_button.config(
+                    text="Unpin" if self.attributes("-topmost") else "Pin"
+                ),
+            ),
+        )
+        self.topmost_button.grid(row=0, column=1, padx=10, pady=10)
+        control_buttons_frame.pack()
 
         # Bullets Frame
         self.bullets_frame = tk.Frame(self)
