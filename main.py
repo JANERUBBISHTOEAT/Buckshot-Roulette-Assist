@@ -3,29 +3,51 @@ import tkinter as tk
 # import matplotlib.cm as cm
 import matplotlib.colors as colors
 from matplotlib.colors import LinearSegmentedColormap
-from math import comb
+from math import comb, factorial
 
 
-def probability_of_n_k_in_opponents_hand(k, n):
-    remaining_cards = 20 - k  # Total remaining cards after taking k cards
-    remaining_K = 6 - k  # Remaining K cards after taking k cards
+def multinomial_coefficient(total, counts):
+    result = factorial(total)
+    for count in counts:
+        result //= factorial(count)
+    return result
 
-    # Calculate the combinations for opponent having n K's and the rest being non-K's
-    combinations_K_in_opponent = comb(remaining_K, n)
-    combinations_non_K_in_opponent = comb(remaining_cards - remaining_K, 3 - n)
-    total_combinations_opponent = comb(remaining_cards, 3)
 
-    # Probability calculation
-    probability = (
-        combinations_K_in_opponent * combinations_non_K_in_opponent
-    ) / total_combinations_opponent
-    return probability
-    # Calculate probabilities for each k from 0 to 5 and n from 0 to 3
+def calculate_probability(k, n):
+    K_remaining = 6 - k
+    Non_K_remaining = 9 + k
+    Total_ways = factorial(15) // (factorial(5) ** 3)
+
+    favorable_ways = 0
+
+    # Generate all possible combinations of (k1, k2, k3)
+    def generate_combinations(K_remaining):
+        combinations = []
+        for k1 in range(0, min(5, K_remaining) + 1):
+            for k2 in range(0, min(5, K_remaining - k1) + 1):
+                k3 = K_remaining - k1 - k2
+                if 0 <= k3 <= 5:
+                    combinations.append((k1, k2, k3))
+        return combinations
+
+    combinations = generate_combinations(K_remaining)
+
+    for k1, k2, k3 in combinations:
+        if max(k1, k2, k3) <= n:
+            n1, n2, n3 = 5 - k1, 5 - k2, 5 - k3
+            if min(n1, n2, n3) >= 0:
+                ways_K = multinomial_coefficient(K_remaining, [k1, k2, k3])
+                ways_NonK = multinomial_coefficient(Non_K_remaining, [n1, n2, n3])
+                favorable_ways += ways_K * ways_NonK
+
+    probability_no_opponent_exceeds_n = favorable_ways / Total_ways
+    probability_at_least_one_exceeds_n = 1 - probability_no_opponent_exceeds_n
+
+    return probability_at_least_one_exceeds_n
 
 
 probability_results = {
-    k: {n: probability_of_n_k_in_opponents_hand(k, n) for n in range(4)}
-    for k in range(6)
+    k: {n: calculate_probability(k, n) for n in range(4)} for k in range(6)
 }
 
 print(probability_results)
@@ -169,7 +191,7 @@ class App(tk.Tk):
         # Print statistics for each n
         stats = ""
         for n, probability in probabilities.items():
-            stats += f"Friend having {n} K's: {probability:.2f}\n"
+            stats += f"Friend having {n} K's: {probability:.4f}\n"
 
         return stats
 
