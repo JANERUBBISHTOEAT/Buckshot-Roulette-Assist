@@ -3,35 +3,58 @@ import tkinter as tk
 # import matplotlib.cm as cm
 import matplotlib.colors as colors
 from matplotlib.colors import LinearSegmentedColormap
+from math import comb
+
+
+def probability_of_n_k_in_opponents_hand(k, n):
+    remaining_cards = 20 - k  # Total remaining cards after taking k cards
+    remaining_K = 6 - k  # Remaining K cards after taking k cards
+
+    # Calculate the combinations for opponent having n K's and the rest being non-K's
+    combinations_K_in_opponent = comb(remaining_K, n)
+    combinations_non_K_in_opponent = comb(remaining_cards - remaining_K, 3 - n)
+    total_combinations_opponent = comb(remaining_cards, 3)
+
+    # Probability calculation
+    probability = (
+        combinations_K_in_opponent * combinations_non_K_in_opponent
+    ) / total_combinations_opponent
+    return probability
+    # Calculate probabilities for each k from 0 to 5 and n from 0 to 3
+
+
+probability_results = {
+    k: {n: probability_of_n_k_in_opponents_hand(k, n) for n in range(4)}
+    for k in range(6)
+}
+
+print(probability_results)
 
 
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("My App")
-        self.geometry("450x220")
+        self.title("Lier's Bar Assist")
+        self.geometry("300x220")
         self.attributes("-topmost", False)
 
         # Variables
         self.bullets_float = []  # Float probability of *red* bullets
         self.bullets_state = []  # Int state of bullets
         # bullets_state: 0: default, 1: deemed red, 2: deemed black
+        self.prob_map = probability_results
 
         # Slider Frame
         slider_frame = tk.Frame(self)
-        slider_frame_red = tk.Frame(slider_frame)
-        slider_frame_black = tk.Frame(slider_frame)
-        self.place_slider_red(slider_frame_red)
-        self.place_slider_black(slider_frame_black)
-        slider_frame_red.grid(row=0, column=0, padx=10)
-        slider_frame_black.grid(row=0, column=1, padx=10)
+        slider_frame_mine = tk.Frame(slider_frame)
+        self.place_slider_mine(slider_frame_mine)
+        slider_frame_mine.grid(row=0, column=0, padx=10)
         slider_frame.pack(padx=10, pady=10)
 
         # Clear Button
         control_buttons_frame = tk.Frame(self)
-        self.clear_button = tk.Button(
-            control_buttons_frame, text="Clear", command=self.clear_bullets
-        )
+        self.clear_button = tk.Button(control_buttons_frame, text="Clear")
+        self.clear_button.config(state=tk.DISABLED)
         self.clear_button.grid(row=0, column=0, padx=10, pady=10)
 
         # Topmost Button
@@ -48,6 +71,14 @@ class App(tk.Tk):
         self.topmost_button.grid(row=0, column=1, padx=10, pady=10)
         control_buttons_frame.pack()
 
+        self.stats_frame = tk.Frame(self)
+        self.stats_frame.pack(padx=10, pady=10)
+        self.stats_label = tk.Label(self.stats_frame, text="Statistics")
+        self.stats_label.pack()
+
+        # This is Lier's Bar
+        return
+
         # Bullets Frame
         self.bullets_frame = tk.Frame(self)
         self.place_bullets()
@@ -56,28 +87,18 @@ class App(tk.Tk):
         # Initialize bullets
         self.clear_bullets()
 
-    def place_slider_red(self, frame: tk.Frame):
-        self.slider_label_red = tk.Label(frame, text="Red")
-        self.slider_label_red.grid(row=0, column=0)
-        self.slider_label_red.config(fg="white", bg="red")
-        self.slider_red = tk.Scale(frame, from_=0, to=8, orient="horizontal")
-        self.slider_red.config(fg="red", command=lambda _: self.clear_bullets())
-        self.slider_red.set(4)
-        self.slider_red.grid(row=1, column=0)
-
-    def place_slider_black(self, frame: tk.Frame):
-        self.slider_label_black = tk.Label(frame, text="Black")
-        self.slider_label_black.grid(row=0, column=1)
-        self.slider_label_black.config(fg="white", bg="black")
-        self.slider_black = tk.Scale(frame, from_=0, to=8, orient="horizontal")
-        self.slider_black.config(fg="black", command=lambda _: self.clear_bullets())
-        self.slider_black.set(4)
-        self.slider_black.grid(row=1, column=1)
+    def place_slider_mine(self, frame: tk.Frame):
+        self.slider_label_mine = tk.Label(frame, text="My Cards")
+        self.slider_label_mine.grid(row=0, column=0)
+        self.slider_my_card = tk.Scale(frame, from_=0, to=5, orient="horizontal")
+        self.slider_my_card.config(command=lambda _: self.place_stats())
+        self.slider_my_card.set(4)
+        self.slider_my_card.grid(row=1, column=0)
 
     def clear_bullets(self):
         for widget in self.bullets_frame.winfo_children():
             widget.destroy()
-        l = self.slider_red.get() + self.slider_black.get()
+        l = self.slider_my_card.get() + self.slider_black.get()
         self.bullets_float = [-1 for _ in range(l)]
         self.bullets_state = [0 for _ in range(l)]
         self.update_bullets()
@@ -118,7 +139,7 @@ class App(tk.Tk):
     def update_bullets(self):
         deemed_r = sum([1 for e in self.bullets_state if e == 1])
         deemed_b = sum([1 for e in self.bullets_state if e == 2])
-        actual_r = self.slider_red.get()
+        actual_r = self.slider_my_card.get()
         actual_b = self.slider_black.get()
         remaining_r = actual_r - deemed_r
         remaining_b = actual_b - deemed_b
@@ -137,6 +158,23 @@ class App(tk.Tk):
             )
             for i in range(actual_r + actual_b)
         ]
+
+    def calculate_stats(self):
+        # Get my cards
+        my_cards = self.slider_my_card.get()
+
+        # Get probabilities for each n
+        probabilities = self.prob_map[my_cards]
+
+        # Print statistics for each n
+        stats = ""
+        for n, probability in probabilities.items():
+            stats += f"Friend having {n} K's: {probability:.2f}\n"
+
+        return stats
+
+    def place_stats(self):
+        self.stats_label.config(text=self.calculate_stats())
 
 
 if __name__ == "__main__":
