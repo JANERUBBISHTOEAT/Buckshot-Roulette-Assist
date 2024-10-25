@@ -20,7 +20,8 @@ def multinomial_coefficient(total, counts):
 k_values = range(0, 6)
 n_values = range(0, 6)
 
-prob_matrix = np.zeros((len(n_values), len(k_values)))
+CDF_matrix = np.zeros((len(n_values), len(k_values)))
+PMF_matrix = np.zeros((len(n_values), len(k_values)))
 
 for k in k_values:
     acc_ways = 0
@@ -28,7 +29,8 @@ for k in k_values:
     for n in reversed(n_values):
         ways = PMF.get(k, {}).get(n, 0)
         acc_ways += ways
-        prob_matrix[n, k] = acc_ways / total_ways
+        CDF_matrix[n, k] = acc_ways / total_ways
+        PMF_matrix[n, k] = ways / total_ways
 
 
 class App(tk.Tk):
@@ -165,7 +167,7 @@ class App(tk.Tk):
         my_cards = self.slider_my_card.get()
 
         # Get probabilities for each n
-        probabilities = prob_matrix[my_cards]
+        probabilities = CDF_matrix[my_cards]
 
         # Print statistics for each n
         stats = ""
@@ -185,7 +187,7 @@ class App(tk.Tk):
         self.heatmap_on = True
         plt.figure(figsize=(8, 6))
         sns.heatmap(
-            prob_matrix,
+            CDF_matrix,
             annot=True,
             fmt=".4f",
             cmap="YlGnBu",
