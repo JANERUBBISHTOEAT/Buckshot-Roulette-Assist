@@ -1,6 +1,6 @@
 # Lier's-Bar-Assist
 
-> Also see: [Buckshot-Roulette-Assist](main)
+> Also see: [Buckshot-Roulette-Assist](https://github.com/JANERUBBISHTOEAT/Buckshot-Roulette-Assist?tab=readme-ov-file#buckshot-roulette-assist)
 > ![Buckshot-Roulette-Assist](https://raw.githubusercontent.com/JANERUBBISHTOEAT/Buckshot-Roulette-Assist/refs/heads/main/BRA-sample.png)
 
 This app helps you lie with increased confidence: it tells you the probability of：
