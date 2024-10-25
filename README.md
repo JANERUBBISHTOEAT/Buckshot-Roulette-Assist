@@ -1,5 +1,7 @@
 # Buckshot-Roulette-Assist
 
+[Download Here](https://github.com/JANERUBBISHTOEAT/Buckshot-Roulette-Assist/releases?q=BRA&expanded=true)
+
 > Also see: [Lier's-Bar-Assist](https://github.com/JANERUBBISHTOEAT/Buckshot-Roulette-Assist/tree/Liers-Bar-Assist?tab=readme-ov-file#liers-bar-assist)
 > ![Lier's-Bar-Assist](https://raw.githubusercontent.com/JANERUBBISHTOEAT/Buckshot-Roulette-Assist/refs/heads/Liers-Bar-Assist/PMF.png)
 
