@@ -1,5 +1,7 @@
 # Buckshot-Roulette-Assist
 
+> Also see: [Lier's-Bar-Assist](Liers-Bar-Assist)
+
 This app helps you roulette with increased confidence: it tells you the probability of remaining bullets.
 
 To use:
