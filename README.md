@@ -1,5 +1,7 @@
 # Lier's-Bar-Assist
 
+> Also see: [Buckshot-Roulette-Assist](main)
+
 This app helps you lie with increased confidence: it tells you the probability of：
 
 - one of your friends having a certain number of cards in their hand
