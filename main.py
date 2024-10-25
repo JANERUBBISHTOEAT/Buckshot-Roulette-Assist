@@ -1,9 +1,12 @@
 import tkinter as tk
+from math import comb, factorial
 
 # import matplotlib.cm as cm
 import matplotlib.colors as colors
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
-from math import comb, factorial
 
 
 def multinomial_coefficient(total, counts):
@@ -47,10 +50,35 @@ def calculate_probability(k, n):
 
 
 probability_results = {
-    k: {n: calculate_probability(k, n) for n in range(4)} for k in range(6)
+    k: {n: calculate_probability(k, n) for n in range(6)} for k in range(6)
 }
 
 print(probability_results)
+
+
+k_values = range(0, 6)
+n_values = range(0, 6)
+
+prob_matrix = np.zeros((len(n_values), len(k_values)))
+
+for i, n in enumerate(n_values):
+    for j, k in enumerate(k_values):
+        prob = probability_results[k][n]
+        prob_matrix[i, j] = prob
+
+plt.figure(figsize=(8, 6))
+sns.heatmap(
+    prob_matrix,
+    annot=True,
+    fmt=".4f",
+    cmap="YlGnBu",
+    xticklabels=k_values,
+    yticklabels=n_values,
+)
+plt.xlabel("k")
+plt.ylabel("n")
+plt.title("prob")
+plt.show()
 
 
 class App(tk.Tk):
