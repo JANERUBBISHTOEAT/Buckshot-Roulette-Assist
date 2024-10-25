@@ -3,12 +3,13 @@
 This app helps you roulette with increased confidence: it tells you the probability of remaining bullets.
 
 To use:
+
 - 1 click: deem this bullet to be red
 - 2 click: deem this bullet to be black
 - 3 click: do not deem this bullet (use predicted probability)
 
 Video Intro:
-https://youtu.be/PrRg4XRcPjI
+<https://youtu.be/PrRg4XRcPjI>
 
 ![image](https://github.com/JANERUBBISHTOEAT/Buckshot-Roulette-Assist/assets/55824267/8d08fbef-82d2-4700-8386-1ed2d94ebd5f)
 
