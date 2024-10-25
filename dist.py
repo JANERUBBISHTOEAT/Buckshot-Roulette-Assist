@@ -1,4 +1,3 @@
-import pandas as pd
 import math
 from itertools import product
 
@@ -54,9 +53,9 @@ def dist_given_a(a_A):
     return ace_count_dist_given_a
 
 
-ace_count_dist = {}
+PMF = {}
 
 for aces_a in range(per_player + 1):
-    ace_count_dist[aces_a] = dist_given_a(aces_a)
+    PMF[aces_a] = dist_given_a(aces_a)
 
-print(ace_count_dist)
+print(PMF)

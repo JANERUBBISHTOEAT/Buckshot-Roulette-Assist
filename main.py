@@ -1,12 +1,13 @@
 import tkinter as tk
-from math import comb, factorial
+from math import factorial
 
-# import matplotlib.cm as cm
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
+
+from dist import PMF
 
 
 def multinomial_coefficient(total, counts):
@@ -16,55 +17,18 @@ def multinomial_coefficient(total, counts):
     return result
 
 
-def calculate_probability(k, n):
-    K_remaining = 6 - k
-    Non_K_remaining = 9 + k
-    Total_ways = factorial(15) // (factorial(5) ** 3)
-
-    favorable_ways = 0
-
-    # Generate all possible combinations of (k1, k2, k3)
-    def generate_combinations(K_remaining):
-        combinations = []
-        for k1 in range(0, min(5, K_remaining) + 1):
-            for k2 in range(0, min(5, K_remaining - k1) + 1):
-                k3 = K_remaining - k1 - k2
-                if 0 <= k3 <= 5:
-                    combinations.append((k1, k2, k3))
-        return combinations
-
-    combinations = generate_combinations(K_remaining)
-
-    for k1, k2, k3 in combinations:
-        if max(k1, k2, k3) <= n:
-            n1, n2, n3 = 5 - k1, 5 - k2, 5 - k3
-            if min(n1, n2, n3) >= 0:
-                ways_K = multinomial_coefficient(K_remaining, [k1, k2, k3])
-                ways_NonK = multinomial_coefficient(Non_K_remaining, [n1, n2, n3])
-                favorable_ways += ways_K * ways_NonK
-
-    probability_no_opponent_exceeds_n = favorable_ways / Total_ways
-    probability_at_least_one_exceeds_n = 1 - probability_no_opponent_exceeds_n
-
-    return probability_at_least_one_exceeds_n
-
-
-probability_results = {
-    k: {n: calculate_probability(k, n) for n in range(6)} for k in range(6)
-}
-
-print(probability_results)
-
-
 k_values = range(0, 6)
 n_values = range(0, 6)
 
 prob_matrix = np.zeros((len(n_values), len(k_values)))
 
-for i, n in enumerate(n_values):
-    for j, k in enumerate(k_values):
-        prob = probability_results[k][n]
-        prob_matrix[i, j] = prob
+for k in k_values:
+    acc_ways = 0
+    total_ways = sum(PMF.get(k, {}).values())
+    for n in reversed(n_values):
+        ways = PMF.get(k, {}).get(n, 0)
+        acc_ways += ways
+        prob_matrix[n, k] = acc_ways / total_ways
 
 
 class App(tk.Tk):
@@ -78,7 +42,6 @@ class App(tk.Tk):
         self.bullets_float = []  # Float probability of *red* bullets
         self.bullets_state = []  # Int state of bullets
         # bullets_state: 0: default, 1: deemed red, 2: deemed black
-        self.prob_map = probability_results
         self.heatmap_on = False
 
         # Slider Frame
@@ -202,11 +165,11 @@ class App(tk.Tk):
         my_cards = self.slider_my_card.get()
 
         # Get probabilities for each n
-        probabilities = self.prob_map[my_cards]
+        probabilities = prob_matrix[my_cards]
 
         # Print statistics for each n
         stats = ""
-        for n, probability in probabilities.items():
+        for n, probability in enumerate(probabilities):
             stats += f"Friend having {n} K's: {probability:.4f}\n"
 
         return stats
@@ -232,6 +195,7 @@ class App(tk.Tk):
         plt.xlabel("k")
         plt.ylabel("n")
         plt.title("prob")
+        # plt.savefig("CDF.png", dpi=600)
         plt.show()
 
 
