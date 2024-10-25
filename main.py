@@ -66,20 +66,6 @@ for i, n in enumerate(n_values):
         prob = probability_results[k][n]
         prob_matrix[i, j] = prob
 
-plt.figure(figsize=(8, 6))
-sns.heatmap(
-    prob_matrix,
-    annot=True,
-    fmt=".4f",
-    cmap="YlGnBu",
-    xticklabels=k_values,
-    yticklabels=n_values,
-)
-plt.xlabel("k")
-plt.ylabel("n")
-plt.title("prob")
-plt.show()
-
 
 class App(tk.Tk):
     def __init__(self):
@@ -93,6 +79,7 @@ class App(tk.Tk):
         self.bullets_state = []  # Int state of bullets
         # bullets_state: 0: default, 1: deemed red, 2: deemed black
         self.prob_map = probability_results
+        self.heatmap_on = False
 
         # Slider Frame
         slider_frame = tk.Frame(self)
@@ -103,8 +90,9 @@ class App(tk.Tk):
 
         # Clear Button
         control_buttons_frame = tk.Frame(self)
-        self.clear_button = tk.Button(control_buttons_frame, text="Clear")
-        self.clear_button.config(state=tk.DISABLED)
+        self.clear_button = tk.Button(
+            control_buttons_frame, text="Heatmap", command=self.show_heatmap
+        )
         self.clear_button.grid(row=0, column=0, padx=10, pady=10)
 
         # Topmost Button
@@ -225,6 +213,26 @@ class App(tk.Tk):
 
     def place_stats(self):
         self.stats_label.config(text=self.calculate_stats())
+
+    def show_heatmap(self):
+        if self.heatmap_on:
+            plt.close()
+            self.heatmap_on = False
+            return
+        self.heatmap_on = True
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(
+            prob_matrix,
+            annot=True,
+            fmt=".4f",
+            cmap="YlGnBu",
+            xticklabels=k_values,
+            yticklabels=n_values,
+        )
+        plt.xlabel("k")
+        plt.ylabel("n")
+        plt.title("prob")
+        plt.show()
 
 
 if __name__ == "__main__":
