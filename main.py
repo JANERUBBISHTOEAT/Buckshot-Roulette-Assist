@@ -167,7 +167,7 @@ class App(tk.Tk):
         my_cards = self.slider_my_card.get()
 
         # Get probabilities for each n
-        probabilities = CDF_matrix[my_cards]
+        probabilities = CDF_matrix[:, my_cards]
 
         # Print statistics for each n
         stats = ""
