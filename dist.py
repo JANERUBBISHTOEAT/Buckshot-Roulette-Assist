@@ -7,7 +7,7 @@ import seaborn as sns
 
 # Total Aces and other cards in the remaining set
 total = 20
-total_a = 6
+total_a = 6 + 2  # 2 Jokers
 total_na = total - total_a
 per_player = 5
 
@@ -83,7 +83,7 @@ for k in k_values:
         PMF_matrix[n, k] = ways / total_ways
 
 
-def CDF_heatmap():
+def CDF_heatmap(fig=False):
     plt.figure(figsize=(8, 6))
     sns.heatmap(
         CDF_matrix,
@@ -96,11 +96,11 @@ def CDF_heatmap():
     plt.xlabel("k")
     plt.ylabel("n")
     plt.title("CDF")
-    # plt.savefig("CDF.png", dpi=600)
+    plt.savefig("CDF.png", dpi=600) if fig else None
     plt.show()
 
 
-def PMF_heatmap():
+def PMF_heatmap(fig=False):
     plt.figure(figsize=(8, 6))
     sns.heatmap(
         PMF_matrix,
@@ -113,7 +113,7 @@ def PMF_heatmap():
     plt.xlabel("k")
     plt.ylabel("n")
     plt.title("PMF")
-    # plt.savefig("PMF.png", dpi=600)
+    plt.savefig("PMF.png", dpi=600) if fig else None
     plt.show()
 
 
@@ -121,5 +121,5 @@ def close_plt():
     plt.close()
 
 
-# CDF_heatmap()
-# PMF_heatmap()
+# CDF_heatmap(True)
+# PMF_heatmap(True)
