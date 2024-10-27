@@ -23,7 +23,7 @@ def dist_given_a(a_A):
         total_aces_used = a_A + a_B + a_C + a_D
 
         # Trim invalid distributions
-        if total_aces_used > total_a:
+        if total_aces_used != total_a:
             continue  # early return
 
         # Non-ace cards
