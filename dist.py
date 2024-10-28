@@ -89,7 +89,7 @@ def CDF_heatmap(fig=False):
         CDF_matrix,
         annot=True,
         fmt=".4f",
-        cmap="YlGnBu",
+        cmap="Blues",
         xticklabels=k_values,
         yticklabels=n_values,
     )
@@ -106,7 +106,7 @@ def PMF_heatmap(fig=False):
         PMF_matrix,
         annot=True,
         fmt=".4f",
-        cmap="YlGnBu",
+        cmap="Blues",
         xticklabels=k_values,
         yticklabels=n_values,
     )
@@ -121,5 +121,6 @@ def close_plt():
     plt.close()
 
 
-# CDF_heatmap(True)
-# PMF_heatmap(True)
+if __name__ == "__main__":
+    CDF_heatmap(True)
+    PMF_heatmap(True)
