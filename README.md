@@ -2,7 +2,7 @@
 
 [Download Here](https://github.com/JANERUBBISHTOEAT/Buckshot-Roulette-Assist/releases?q=BRA&expanded=true)
 
-> Also see: [Lier's-Bar-Assist](https://github.com/JANERUBBISHTOEAT/Buckshot-Roulette-Assist/tree/Liers-Bar-Assist?tab=readme-ov-file#liers-bar-assist)
+> Also see: [Liar's-Bar-Assist](https://github.com/JANERUBBISHTOEAT/Buckshot-Roulette-Assist/tree/Liers-Bar-Assist?tab=readme-ov-file#liers-bar-assist)
 > ![Lier's-Bar-Assist](https://raw.githubusercontent.com/JANERUBBISHTOEAT/Buckshot-Roulette-Assist/refs/heads/Liers-Bar-Assist/PMF.png)
 
 This app helps you roulette with increased confidence: it tells you the probability of remaining bullets.
