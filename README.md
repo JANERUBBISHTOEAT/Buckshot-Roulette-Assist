@@ -1,4 +1,4 @@
-# Lier's-Bar-Assist
+# Liar's-Bar-Assist
 
 [Download Here](https://github.com/JANERUBBISHTOEAT/Buckshot-Roulette-Assist/releases?q=LBA&expanded=true)
 
